@@ -6,6 +6,7 @@ public class Parser {
 
     private final Grammar grammar;
     public int counter = 0;
+    public long time = 0;
 
     public Parser(Grammar grammar){
         this.grammar = grammar;
@@ -14,7 +15,10 @@ public class Parser {
 //    Naive parser  --------------------------
     public boolean parseNaive(String input) throws Exception {
         counter = 0;
-        return naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1);
+        startTimer();
+        boolean res =  naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1);
+        stopTimer();
+        return res;
     }
 
     // 4073 på 4
@@ -25,12 +29,12 @@ public class Parser {
             return grammar.terminalRuleExists(rule, input[i]);
         }
 
-        for(int r = 0; r < grammar.numberNonTerminalRules; r++){
-            if(grammar.nonTerminalRulesMapped[r][0] != rule){
-                continue;
-            }
-            for(int k = i; k < j; k++){
-                 if(naiveRec(grammar.nonTerminalRulesMapped[r][1], input, i, k) &&
+        for(int k = i; k < j; k++){
+            for(int r = 0; r < grammar.numberNonTerminalRules; r++){
+                if(grammar.nonTerminalRulesMapped[r][0] != rule){
+                    continue;
+                }
+                if(naiveRec(grammar.nonTerminalRulesMapped[r][1], input, i, k) &&
                          naiveRec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j)){
                      return true;
                  }
@@ -41,6 +45,7 @@ public class Parser {
 
     //    Bottom up parser  --------------------------
     public boolean parseBU(String input) throws Exception {
+        startTimer();
         int[] cInput = grammar.convertStringToInts(input);
         counter = 0;
         int n = cInput.length;
@@ -72,37 +77,81 @@ public class Parser {
                 }
             }
         }
+        stopTimer();
         return table[n-1][0][grammar.characterToInt('S')];
     }
 
     //    Top down parser  --------------------------
     public boolean parseTD(String input) throws Exception {
         counter = 0;
-        boolean [][][] table = new boolean[input.length()][input.length()][grammar.numberOfUniqueNonTerminals];
-        return TDrec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1, table);
+        Boolean [][][] table = new Boolean[input.length()][input.length()][grammar.numberOfUniqueNonTerminals];
+        for(int i = 0; i < input.length(); i++){
+            for(int j = 0; j < input.length(); j++){
+                for(int k = 0; k < grammar.numberOfUniqueNonTerminals; k++){
+                    table[i][j][k] = null;
+                }
+            }
+        }
+        startTimer();
+        boolean res =  TDrec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1, table);
+        stopTimer();
+        return res;
     }
 
-    private boolean TDrec(int rule, int[] input, int i, int j, boolean [][][] table){
+    private boolean TDrec(int rule, int[] input, int i, int j, Boolean [][][] table){
         counter ++;
-        if(table[i][j][rule]){
-            return true;
+        if(table[i][j][rule] != null){
+            return table[i][j][rule];
         }
         if(i == j){
-            return grammar.terminalRuleExists(rule, input[i]);
+            table[i][j][rule] = grammar.terminalRuleExists(rule, input[i]);
+            return table[i][j][rule];
         }
-        for(int r = 0; r < grammar.numberNonTerminalRules; r++){
-            if(grammar.nonTerminalRulesMapped[r][0] != rule){
-                continue;
-            }
-            for(int k = i; k < j; k++){
-                if(TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table) &&
-                        TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table)){
+        for(int k = i; k < j; k++){
+            for(int r = 0; r < grammar.numberNonTerminalRules; r++){
+                if(grammar.nonTerminalRulesMapped[r][0] != rule){
+                    continue;
+                }
+//                if(TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table) &&
+//                        TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table)){
+//                    table[k+1][j][rule] = true;
+//                    return true;
+//                }
+                boolean left;
+                boolean right;
+
+                if(table[i][k][grammar.nonTerminalRulesMapped[r][1]] == null){
+                    left = TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table);
+                }else{
+                    left = table[i][k][grammar.nonTerminalRulesMapped[r][1]];
+                }
+
+                if(!left){
+                    continue;
+                }
+
+                if(table[k+1][j][grammar.nonTerminalRulesMapped[r][2]] == null){
+                    right = TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table);
+                }else{
+                    right = table[k+1][j][grammar.nonTerminalRulesMapped[r][2]];
+                }
+
+                if(right){
                     table[i][j][rule] = true;
                     return true;
                 }
             }
         }
+        table[i][j][rule] = false;
         return false;
+    }
+
+    private void startTimer(){
+        time = System.currentTimeMillis();
+    }
+
+    private void stopTimer(){
+        time = System.currentTimeMillis() - time;
     }
 
 }
