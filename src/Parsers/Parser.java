@@ -3,8 +3,6 @@ package Parsers;
 import Grammar.Grammar;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 
 public class Parser {
 
@@ -48,31 +46,31 @@ public class Parser {
         boolean[][][] table = new boolean[n][n][grammar.getNumberOfUniqueNonTerminals()];
 
         for(int i = 0; i < n; i++){
-            // Find which rule that produces input[i]
-            for (Map.Entry<Character, Character> entry : grammar.getAllTerminals().entrySet()) {
-                if (entry.getValue() == input.charAt(i)) {
-                    table[0][i][grammar.NonTerminalToInt(entry.getKey())] = true;
-                    break;
+            // Find which rules that produces input[i]
+            for(int rule = 0; rule < grammar.numberTerminalRules; rule++){
+                if(grammar.terminalToInt(input.charAt(i)) == grammar.terminalRulesMapped[rule][1]){
+                    table[0][i][grammar.terminalRulesMapped[rule][0]] = true;
                 }
             }
         }
 
         for(int len = 1; len < n; len++){
-            for(int c = 0; c < n - len + 1; c++){
+            for(int c = 0; c < n - len; c++){
                 for(int split = 0; split < len; split++){
                     for (int rule = 0; rule < grammar.numberNonTerminalRules; rule ++) {
+
                         int ra = grammar.nonTerminalRulesMapped[rule][0];
                         int rb = grammar.nonTerminalRulesMapped[rule][1];
                         int rc = grammar.nonTerminalRulesMapped[rule][2];
 
-                        if(table[split][c][rb] && table[len-split][c+split][rc]){
+                        if(table[split][c][rb] && table[len-split-1][c+split+1][rc]){
                             table[len][c][ra] = true;
                         }
+                        counter ++;
                     }
                 }
             }
         }
-
-        return table[n-1][0][0];
+        return table[n-1][0][grammar.nonTerminalToInt('S')];
     }
 }

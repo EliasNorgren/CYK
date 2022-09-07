@@ -9,15 +9,17 @@ public class Main {
         Grammar grammar = new Grammar(new File("Resource/dyckGrammar.txt"));
         Parser p = new Parser(grammar);
         StringBuilder sb = new StringBuilder("()");
-        for(int i = 0; i < 1; i ++){
+//        System.out.println(p.parseBU("baaba"));
 
-            System.out.print("Doing \"" + sb + "\" - ");
+        for(int i = 0; i < 5000; i ++){
+
+            System.out.print("Doing \"" + sb.length() + "\" - ");
             System.out.print(p.parseBU(sb.toString()));
             System.out.println(" - " + p.counter + " recursions");
 
             sb.insert(0, "(", 0, 1);
 
-            System.out.print("Doing \"" + sb + "\" - ");
+            System.out.print("Doing \"" + sb.length() + "\" - ");
             System.out.print(p.parseBU(sb.toString()));
             System.out.println(" - " + p.counter + " recursions");
 
