@@ -75,4 +75,38 @@ public class Parser {
         }
         return table[n-1][0][grammar.characterToInt('S')];
     }
+
+    //    Top down parser  --------------------------
+    public boolean parseTD(String input) throws Exception {
+        counter = 0;
+        boolean [][][] table = new boolean[input.length()][input.length()][grammar.numberOfUniqueNonTerminals];
+        return TDrec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1, table);
+    }
+
+    private boolean TDrec(int rule, int[] input, int i, int j, boolean [][][] table){
+        counter ++;
+        if(table[i][j][rule]){
+            return true;
+        }
+        if(i == j){
+            return grammar.terminalRuleExists(rule, input[i]);
+        }
+        for(int r = 0; r < grammar.numberNonTerminalRules; r++){
+            if(grammar.nonTerminalRulesMapped[r][0] != rule){
+                continue;
+            }
+            int k = i;
+            while(k < j){
+                boolean b1 = TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table);
+                boolean b2 = TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table);
+                if(b1 && b2){
+                    table[i][j][rule] = true;
+                    return true;
+                }
+                k++;
+            }
+        }
+        return false;
+    }
+
 }

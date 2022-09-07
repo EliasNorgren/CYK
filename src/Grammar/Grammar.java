@@ -56,7 +56,7 @@ public class Grammar {
             characterMappingTable[i] = c;
             i++;
         }
-        
+
         i = 0;
         for (Map.Entry<Character, ArrayList<char[]>> entry : nonTerminalRules.entrySet()) {
             for(char[] c : entry.getValue()){
