@@ -17,6 +17,8 @@ public class Parser {
         return naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1);
     }
 
+    // 4073 på 4
+    //
     private boolean naiveRec(int rule, int[] input, int i, int j){
         counter ++;
         if(i == j){
@@ -27,14 +29,11 @@ public class Parser {
             if(grammar.nonTerminalRulesMapped[r][0] != rule){
                 continue;
             }
-            int k = i;
-            while(k < j){
-                boolean b1 = naiveRec(grammar.nonTerminalRulesMapped[r][1], input, i, k);
-                boolean b2 = naiveRec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j);
-                if(b1 && b2){
-                    return true;
-                }
-                k++;
+            for(int k = i; k < j; k++){
+                 if(naiveRec(grammar.nonTerminalRulesMapped[r][1], input, i, k) &&
+                         naiveRec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j)){
+                     return true;
+                 }
             }
         }
         return false;
@@ -95,15 +94,12 @@ public class Parser {
             if(grammar.nonTerminalRulesMapped[r][0] != rule){
                 continue;
             }
-            int k = i;
-            while(k < j){
-                boolean b1 = TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table);
-                boolean b2 = TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table);
-                if(b1 && b2){
+            for(int k = i; k < j; k++){
+                if(TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table) &&
+                        TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table)){
                     table[i][j][rule] = true;
                     return true;
                 }
-                k++;
             }
         }
         return false;

@@ -74,7 +74,6 @@ public class Grammar {
             terminalRulesMapped[i][1] = this.characterToInt(entry.getValue());
             i++;
         }
-
     }
     public boolean terminalRuleExists(int a, int b) {
         for(int i = 0; i < numberTerminalRules; i++){

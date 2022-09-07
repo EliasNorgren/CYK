@@ -39,6 +39,7 @@ class ParserTest {
         p = new Parser(grammar);
 
         assert p.parseNaive("baaba");
+        System.out.println(p.counter);
         assert !p.parseNaive("baabaa");
     }
 
