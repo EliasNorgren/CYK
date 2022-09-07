@@ -2,8 +2,6 @@ package Parsers;
 
 import Grammar.Grammar;
 
-import java.util.ArrayList;
-
 public class Parser {
 
     private final Grammar grammar;
@@ -14,41 +12,45 @@ public class Parser {
     }
 
 //    Naive parser  --------------------------
-    public boolean parseNaive(String input){
+    public boolean parseNaive(String input) throws Exception {
         counter = 0;
-        return naiveRec('S', input);
+        return naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1);
     }
 
-    private boolean naiveRec(char rule, String input){
+    private boolean naiveRec(int rule, int[] input, int i, int j){
         counter ++;
-        if(input.length() == 1){
-            return grammar.terminalRuleExists(rule, input.charAt(0));
+        if(i == j){
+            return grammar.terminalRuleExists(rule, input[i]);
         }
-        ArrayList<char[]> rules = grammar.getAllNonTerminalsFromRule(rule);
-        if(rules == null){
-            return false;
-        }
-        for(char[] r : rules){
-            for(int k = 1; k < input.length(); k++){
-                boolean b1 = naiveRec(r[0], input.substring(0,k));
-                boolean b2 = naiveRec(r[1], input.substring(k));
+
+        for(int r = 0; r < grammar.numberNonTerminalRules; r++){
+            if(grammar.nonTerminalRulesMapped[r][0] != rule){
+                continue;
+            }
+            int k = i;
+            while(k < j){
+                boolean b1 = naiveRec(grammar.nonTerminalRulesMapped[r][1], input, i, k);
+                boolean b2 = naiveRec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j);
                 if(b1 && b2){
                     return true;
                 }
+                k++;
             }
         }
         return false;
     }
 
     //    Bottom up parser  --------------------------
-    public boolean parseBU(String input){
-        int n = input.length();
-        boolean[][][] table = new boolean[n][n][grammar.getNumberOfUniqueNonTerminals()];
+    public boolean parseBU(String input) throws Exception {
+        int[] cInput = grammar.convertStringToInts(input);
+        counter = 0;
+        int n = cInput.length;
+        boolean[][][] table = new boolean[n][n][grammar.numberOfUniqueNonTerminals];
 
         for(int i = 0; i < n; i++){
             // Find which rules that produces input[i]
             for(int rule = 0; rule < grammar.numberTerminalRules; rule++){
-                if(grammar.terminalToInt(input.charAt(i)) == grammar.terminalRulesMapped[rule][1]){
+                if(cInput[i] == grammar.terminalRulesMapped[rule][1]){
                     table[0][i][grammar.terminalRulesMapped[rule][0]] = true;
                 }
             }
@@ -71,6 +73,6 @@ public class Parser {
                 }
             }
         }
-        return table[n-1][0][grammar.nonTerminalToInt('S')];
+        return table[n-1][0][grammar.characterToInt('S')];
     }
 }
