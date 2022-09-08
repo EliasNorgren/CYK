@@ -7,27 +7,25 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Grammar grammar = new Grammar(new File("Resource/dyckGrammar.txt"));
         Parser p = new Parser(grammar);
-        StringBuilder sb = new StringBuilder("(");
-//        System.out.println(p.parseTD("()()") + " " + p.counter);
 
-        for(int i = 0; i < 8; i ++){
+//        System.out.println(p.parseTD("(()))"));
+        StringEnumerator se = new StringEnumerator("", "()", 1250);
 
-            System.out.print("Doing \"" + sb + "\" - " + i +  " ");
-            System.out.print(p.parseTD(sb.toString()));
+        for(int i = 0; i < 50; i ++){
+            String s = se.getNext();
+            System.out.print("Doing \"" + se.getLength() + "\" - " + i +  " ");
+            System.out.print(p.parseTD(s));
             System.out.println(" - " + p.counter + " recursions" + " - " + p.time + " ms");
 
-            // 4 parenterser nästlade 900 diff naiva
-            // 5 20 k
-
 //            sb.insert(0, "(", 0, 1);
-            sb.append(")");
+//            sb.append("()");
 //
-            System.out.print("Doing \"" + sb + "\" - " + i + " ");
-            System.out.print(p.parseNaive(sb.toString()));
-            System.out.println(" - " + p.counter + " recursions");
-
-//            sb.insert(sb.length(), ")", 0, 1);
-            sb.append("(");
+//            System.out.print("Doing \"" + sb.length() + "\" - " + i + " ");
+//            System.out.print(p.parseBU(sb.toString()));
+//            System.out.println(" - " + p.counter + " recursions" + " - " + p.time + " ms");
+//
+////            sb.insert(sb.length(), ")", 0, 1);
+//            sb.append("()");
 
         }
 

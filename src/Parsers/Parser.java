@@ -16,7 +16,7 @@ public class Parser {
     public boolean parseNaive(String input) throws Exception {
         counter = 0;
         startTimer();
-        boolean res =  naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1);
+        boolean res =  naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length());
         stopTimer();
         return res;
     }
@@ -25,17 +25,17 @@ public class Parser {
     //
     private boolean naiveRec(int rule, int[] input, int i, int j){
         counter ++;
-        if(i == j){
+        if(i == j - 1){
             return grammar.terminalRuleExists(rule, input[i]);
         }
 
-        for(int k = i; k < j; k++){
+        for(int k = i + 1; k < j; k++){
             for(int r = 0; r < grammar.numberNonTerminalRules; r++){
-                if(grammar.nonTerminalRulesMapped[r][0] != rule){
+                if(grammar.nonTerminalRules[r][0] != rule){
                     continue;
                 }
-                if(naiveRec(grammar.nonTerminalRulesMapped[r][1], input, i, k) &&
-                         naiveRec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j)){
+                if(naiveRec(grammar.nonTerminalRules[r][1], input, i, k) &&
+                         naiveRec(grammar.nonTerminalRules[r][2], input, k, j)){
                      return true;
                  }
             }
@@ -65,9 +65,9 @@ public class Parser {
                 for(int split = 0; split < len; split++){
                     for (int rule = 0; rule < grammar.numberNonTerminalRules; rule ++) {
 
-                        int ra = grammar.nonTerminalRulesMapped[rule][0];
-                        int rb = grammar.nonTerminalRulesMapped[rule][1];
-                        int rc = grammar.nonTerminalRulesMapped[rule][2];
+                        int ra = grammar.nonTerminalRules[rule][0];
+                        int rb = grammar.nonTerminalRules[rule][1];
+                        int rc = grammar.nonTerminalRules[rule][2];
 
                         if(table[split][c][rb] && table[len-split-1][c+split+1][rc]){
                             table[len][c][ra] = true;
@@ -93,7 +93,7 @@ public class Parser {
             }
         }
         startTimer();
-        boolean res =  TDrec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length()-1, table);
+        boolean res =  TDrec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length() - 1, table);
         stopTimer();
         return res;
     }
@@ -109,36 +109,19 @@ public class Parser {
         }
         for(int k = i; k < j; k++){
             for(int r = 0; r < grammar.numberNonTerminalRules; r++){
-                if(grammar.nonTerminalRulesMapped[r][0] != rule){
+                if(grammar.nonTerminalRules[r][0] != rule){
                     continue;
                 }
-//                if(TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table) &&
-//                        TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table)){
-//                    table[k+1][j][rule] = true;
-//                    return true;
-//                }
-                boolean left;
-                boolean right;
-
-                if(table[i][k][grammar.nonTerminalRulesMapped[r][1]] == null){
-                    left = TDrec(grammar.nonTerminalRulesMapped[r][1], input, i, k, table);
-                }else{
-                    left = table[i][k][grammar.nonTerminalRulesMapped[r][1]];
-                }
-
-                if(!left){
+                table[i][k][grammar.nonTerminalRules[r][1]] = TDrec(grammar.nonTerminalRules[r][1], input, i, k, table);
+                if(!table[i][k][grammar.nonTerminalRules[r][1]]){
                     continue;
                 }
-
-                if(table[k+1][j][grammar.nonTerminalRulesMapped[r][2]] == null){
-                    right = TDrec(grammar.nonTerminalRulesMapped[r][2], input, k+1, j, table);
-                }else{
-                    right = table[k+1][j][grammar.nonTerminalRulesMapped[r][2]];
-                }
-
-                if(right){
+                table[k+1][j][grammar.nonTerminalRules[r][2]] = TDrec(grammar.nonTerminalRules[r][2], input, k+1, j, table);
+                if(table[k+1][j][grammar.nonTerminalRules[r][2]]){
                     table[i][j][rule] = true;
                     return true;
+                }else{
+                    table[i][j][rule] = false;
                 }
             }
         }

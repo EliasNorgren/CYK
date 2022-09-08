@@ -6,7 +6,7 @@ import java.util.*;
 public class Grammar {
 
     public int [][] terminalRulesMapped;
-    public int [][] nonTerminalRulesMapped;
+    public int [][] nonTerminalRules;
     public int numberNonTerminalRules;
     public int numberTerminalRules;
     public int numberOfUniqueNonTerminals;
@@ -40,7 +40,7 @@ public class Grammar {
         }
 
         this.numberOfUniqueNonTerminals = characters.size();
-        nonTerminalRulesMapped = new int[numberNonTerminalRules][3];
+        this.nonTerminalRules = new int[numberNonTerminalRules][3];
 
         characterMappingTable = new int[characters.size() + terminalCharacters.size()];
 
@@ -60,9 +60,9 @@ public class Grammar {
         i = 0;
         for (Map.Entry<Character, ArrayList<char[]>> entry : nonTerminalRules.entrySet()) {
             for(char[] c : entry.getValue()){
-                nonTerminalRulesMapped[i][0] = this.characterToInt(entry.getKey());
-                nonTerminalRulesMapped[i][1] = this.characterToInt(c[0]);
-                nonTerminalRulesMapped[i][2] = this.characterToInt(c[1]);
+                this.nonTerminalRules[i][0] = this.characterToInt(entry.getKey());
+                this.nonTerminalRules[i][1] = this.characterToInt(c[0]);
+                this.nonTerminalRules[i][2] = this.characterToInt(c[1]);
                 i++;
             }
         }
