@@ -1,10 +1,11 @@
-import Grammar.Grammar;
+import Grammar.*;
 import Parsers.Parser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws CharacterNotFoundException, FileNotFoundException {
         Grammar grammar = new Grammar(new File("Resource/dyckGrammar.txt"));
         Parser p = new Parser(grammar);
 

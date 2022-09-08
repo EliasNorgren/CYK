@@ -1,5 +1,5 @@
 public class StringEnumerator {
-    private StringBuilder sb;
+    private final StringBuilder sb;
     String appendString;
     int increments;
     public StringEnumerator(String startString, String appendString, int increments){

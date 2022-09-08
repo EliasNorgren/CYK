@@ -1,7 +1,6 @@
 package Parsers;
 
-import Grammar.Grammar;
-
+import Grammar.*;
 public class Parser {
 
     private final Grammar grammar;
@@ -13,7 +12,7 @@ public class Parser {
     }
 
 //    Naive parser  --------------------------
-    public boolean parseNaive(String input) throws Exception {
+    public boolean parseNaive(String input) throws CharacterNotFoundException {
         counter = 0;
         startTimer();
         boolean res =  naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length());
@@ -44,7 +43,7 @@ public class Parser {
     }
 
     //    Bottom up parser  --------------------------
-    public boolean parseBU(String input) throws Exception {
+    public boolean parseBU(String input) throws CharacterNotFoundException {
         startTimer();
         int[] cInput = grammar.convertStringToInts(input);
         counter = 0;
@@ -82,7 +81,7 @@ public class Parser {
     }
 
     //    Top down parser  --------------------------
-    public boolean parseTD(String input) throws Exception {
+    public boolean parseTD(String input) throws CharacterNotFoundException {
         counter = 0;
         Boolean [][][] table = new Boolean[input.length()][input.length()][grammar.numberOfUniqueNonTerminals];
         for(int i = 0; i < input.length(); i++){
