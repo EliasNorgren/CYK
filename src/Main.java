@@ -9,12 +9,12 @@ public class Main {
         Parser p = new Parser(grammar);
 
 //        System.out.println(p.parseTD("(()))"));
-        StringEnumerator se = new StringEnumerator("", "()", 1250);
+        StringEnumerator se = new StringEnumerator("", "()", 50);
 
         for(int i = 0; i < 50; i ++){
             String s = se.getNext();
             System.out.print("Doing \"" + se.getLength() + "\" - " + i +  " ");
-            System.out.print(p.parseTD(s));
+            System.out.print(p.parseBU(s));
             System.out.println(" - " + p.counter + " recursions" + " - " + p.time + " ms");
 
 //            sb.insert(0, "(", 0, 1);
