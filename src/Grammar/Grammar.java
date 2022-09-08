@@ -43,20 +43,15 @@ public class Grammar {
         this.nonTerminalRules = new int[numberNonTerminalRules][3];
 
         characterMappingTable = new int[characters.size() + terminalCharacters.size()];
-
-        Iterator<Character> it = characters.iterator();
         int i = 0;
-        while (it.hasNext()){
-            char c = it.next();
+        for(char c : characters){
             characterMappingTable[i] = c;
             i++;
         }
-
         for (char c : terminalCharacters) {
             characterMappingTable[i] = c;
             i++;
         }
-
         i = 0;
         for (Map.Entry<Character, ArrayList<char[]>> entry : nonTerminalRules.entrySet()) {
             for(char[] c : entry.getValue()){
@@ -66,7 +61,6 @@ public class Grammar {
                 i++;
             }
         }
-
         terminalRulesMapped = new int[numberTerminalRules][2];
         i = 0;
         for(Map.Entry<Character, Character> entry : terminalRules.entrySet()){
