@@ -56,7 +56,6 @@ class ParserTest {
         for (int i = 0; i < 5; i++) {
 
             sb2.insert(sb.length(), ")", 0, 1);
-            System.out.println(sb2 + " fail");
             boolean x = p.parseTD(sb2.toString());
             assert !x;
             System.out.println("Doing \"" + sb2 + "\" - " + p.counter);

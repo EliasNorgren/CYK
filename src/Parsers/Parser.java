@@ -4,7 +4,7 @@ import Grammar.*;
 public class Parser {
 
     private final Grammar grammar;
-    public int counter = 0;
+    public long counter = 0;
     public long time = 0;
 
     public Parser(Grammar grammar){
@@ -72,6 +72,9 @@ public class Parser {
                             table[len][c][ra] = true;
                         }
                         counter ++;
+//                        if(counter < 0) {
+//                            throw new CharacterNotFoundException("Overflow on long");
+//                        }
                     }
                 }
             }
@@ -119,8 +122,6 @@ public class Parser {
                 if(table[k+1][j][grammar.nonTerminalRules[r][2]]){
                     table[i][j][rule] = true;
                     return true;
-                }else{
-                    table[i][j][rule] = false;
                 }
             }
         }
