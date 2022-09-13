@@ -11,24 +11,21 @@ public class Main {
 
 //        System.out.println(p.parseTD("(()))"));
 //        StringEnumerator se = new StringEnumerator("()", "a", 100);
-        StringBuilder sb = new StringBuilder("()");
-
-        for(int i = 0; i < 50; i ++){
+        StringBuilder sb = new StringBuilder("((((()))))");
+        System.out.println("String length - counter - time (ms)");
+        for(int i = 0; i < 10; i ++){
 //            String s = se.getNext();
-            System.out.print("Doing \"" + sb + "\" - " + (i+1) +  " ");
+            System.out.print(sb.length() + " ");
             System.gc();
             System.out.print(p.parseTD(sb.toString()));
-            System.out.println(" - " + p.counter + " recursions" + " - " + p.time + " ms");
+            System.out.println(" " + p.counter + " " + p.time);
 
-            sb.insert(0, "(", 0, 1);
-//            sb.append("()");
-//
-//            System.out.print("Doing \"" + sb.length() + "\" - " + i + " ");
-//            System.out.print(p.parseBU(sb.toString()));
-//            System.out.println(" - " + p.counter + " recursions" + " - " + p.time + " ms");
-//
-            sb.insert(sb.length(), ")", 0, 1);
-//            sb.append("()");
+
+            for(int j = 0; j < 100; j++){
+                sb.insert(0, "(", 0, 1);
+                sb.insert(sb.length(), ")", 0, 1);
+            }
+
 
         }
 
