@@ -69,6 +69,7 @@ public class Grammar {
             i++;
         }
     }
+
     public boolean terminalRuleExists(int a, int b) {
         for(int i = 0; i < numberTerminalRules; i++){
             if(terminalRulesMapped[i][0] == a && terminalRulesMapped[i][1] == b){

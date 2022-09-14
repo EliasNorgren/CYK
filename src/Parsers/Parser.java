@@ -20,8 +20,6 @@ public class Parser {
         return res;
     }
 
-    // 4073 på 4
-    //
     private boolean naiveRec(int rule, int[] input, int i, int j){
         counter ++;
         if(i == j - 1){
@@ -72,9 +70,6 @@ public class Parser {
                             table[len][c][ra] = true;
                         }
                         counter ++;
-//                        if(counter < 0) {
-//                            throw new CharacterNotFoundException("Overflow on long");
-//                        }
                     }
                 }
             }
