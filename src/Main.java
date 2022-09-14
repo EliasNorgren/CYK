@@ -11,87 +11,54 @@ public class Main {
 
         StringEnumerator se = new StringEnumerator("()", "()", StringEnumerator.Index.MIDDLE, 100);
         System.out.println("Doing ((())) bottom up");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseBU(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "BU");
 
         se = new StringEnumerator("", "()", StringEnumerator.Index.END, 100);
         System.out.println("Doing ()()().. bottom up");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseBU(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "BU");
 
 
         se = new StringEnumerator(")", "()", StringEnumerator.Index.BEGINNING, 100);
         System.out.println("Doing ()..()) bottom up");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseBU(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "BU");
 
         se = new StringEnumerator(")", "()", StringEnumerator.Index.END, 100);
         System.out.println("Doing )()..() bottom up");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseBU(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "BU");
 
         se = new StringEnumerator("()", "()", StringEnumerator.Index.MIDDLE, 100);
         System.out.println("Doing ((())) top-down");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseTD(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "TD");
 
         se = new StringEnumerator("(", "()", StringEnumerator.Index.BEGINNING, 100);
         System.out.println("Doing ()..()( top-down");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseTD(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "TD");
 
         se = new StringEnumerator("", "()", StringEnumerator.Index.END, 100);
         System.out.println("Doing ()..() top-down");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseTD(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
-
+        runTests(p, se, "TD");
         se = new StringEnumerator(")", "()", StringEnumerator.Index.END, 100);
         System.out.println("Doing )()..() top-down");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseTD(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "TD");
 
         grammar = new Grammar(new File("Resource/stupidGrammar.txt"));
         p = new Parser(grammar);
 
         se = new StringEnumerator("", "a", StringEnumerator.Index.END, 100);
         System.out.println("Doing a..a top-down");
-        for(int i = 0; i < 5; i ++){
-            String s = se.getNext();
-            boolean val = p.parseTD(s);
-            System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
-        }
+        runTests(p, se, "TD");
 
         se = new StringEnumerator("", "a", StringEnumerator.Index.END, 100);
         System.out.println("Doing a..a bottom-up");
-        for(int i = 0; i < 5; i ++){
+        runTests(p, se, "BU");
+
+    }
+
+    private static void runTests(Parser p, StringEnumerator se, String bu) throws CharacterNotFoundException {
+        for (int i = 0; i < 5; i++) {
             String s = se.getNext();
-            boolean val = p.parseBU(s);
+            boolean val = p.parse(bu, s);
             System.out.println("Length: " + s.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
         }
-
     }
 }

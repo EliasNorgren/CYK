@@ -132,4 +132,12 @@ public class Parser {
         time = System.currentTimeMillis() - time;
     }
 
+    public boolean parse(String parser, String input) throws CharacterNotFoundException{
+        switch (parser){
+            case "BU" : return parseBU(input);
+            case "TD" : return parseTD(input);
+            case "Naive" : return parseNaive(input);
+            default: return parseNaive(input);
+        }
+    }
 }

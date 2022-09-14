@@ -1,3 +1,5 @@
+
+
 public class StringEnumerator {
     private final StringBuilder sb;
     private String appendString;
