@@ -15,7 +15,7 @@ public class Parser {
     public boolean parseNaive(String input) throws CharacterNotFoundException {
         counter = 0;
         startTimer();
-        boolean res =  naiveRec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length());
+        boolean res =  naiveRec(0, grammar.convertStringToInts(input), 0 , input.length());
         stopTimer();
         return res;
     }
@@ -75,7 +75,7 @@ public class Parser {
             }
         }
         stopTimer();
-        return table[n-1][0][grammar.characterToInt('S')];
+        return table[n-1][0][0];
     }
 
     //    Top down parser  --------------------------
@@ -90,7 +90,7 @@ public class Parser {
             }
         }
         startTimer();
-        boolean res =  TDrec(grammar.characterToInt('S'), grammar.convertStringToInts(input), 0 , input.length() - 1, table);
+        boolean res =  TDrec(0, grammar.convertStringToInts(input), 0 , input.length() - 1, table);
         stopTimer();
         return res;
     }
@@ -133,11 +133,11 @@ public class Parser {
     }
 
     public boolean parse(String parser, String input) throws CharacterNotFoundException{
-        switch (parser){
-            case "BU" : return parseBU(input);
-            case "TD" : return parseTD(input);
-            case "Naive" : return parseNaive(input);
-            default: return parseNaive(input);
-        }
+        return switch (parser) {
+            case "BU" -> parseBU(input);
+            case "TD" -> parseTD(input);
+            case "Naive" -> parseNaive(input);
+            default -> parseNaive(input);
+        };
     }
 }

@@ -1,6 +1,6 @@
-S SS
 S LA
+L (
+S SS
 S LR
 A SR
-L (
 R )

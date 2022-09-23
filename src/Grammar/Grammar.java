@@ -19,12 +19,18 @@ public class Grammar {
         Scanner sc = new Scanner(new FileReader(file));
         Set<Character> characters = new HashSet<>();
         Set<Character> terminalCharacters = new HashSet<>();
-
+        boolean firstRead = false;
+        int start = -1;
         numberNonTerminalRules = 0;
         while(sc.hasNext()){
             String read = sc.nextLine();
             String[] splitted = read.split(" ");
             characters.add(splitted[0].charAt(0));
+
+            if(!firstRead){
+                firstRead = true;
+                start = splitted[0].charAt(0);
+            }
 
             if(splitted[1].length() == 1){
                 terminalRules.put(splitted[0].charAt(0), splitted[1].charAt(0));
@@ -43,7 +49,9 @@ public class Grammar {
         this.nonTerminalRules = new int[numberNonTerminalRules][3];
 
         characterMappingTable = new int[characters.size() + terminalCharacters.size()];
-        int i = 0;
+        characterMappingTable[0] = start;
+        characters.remove((char) start);
+        int i = 1;
         for(char c : characters){
             characterMappingTable[i] = c;
             i++;
@@ -79,13 +87,13 @@ public class Grammar {
         return false;
     }
 
-    public int characterToInt(char key) throws CharacterNotFoundException {
+    private int characterToInt(char key) throws CharacterNotFoundException {
         for(int j = 0; j < characterMappingTable.length; j++){
             if(key == characterMappingTable[j]){
                 return j;
             }
         }
-        throw new CharacterNotFoundException ("Character not found");
+        throw new CharacterNotFoundException ("Character not found: " + key);
     }
 
     public int[] convertStringToInts(String input) throws CharacterNotFoundException {
