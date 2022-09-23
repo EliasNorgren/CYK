@@ -133,11 +133,11 @@ public class Parser {
     }
 
     public boolean parse(String parser, String input) throws CharacterNotFoundException{
-        return switch (parser) {
-            case "BU" -> parseBU(input);
-            case "TD" -> parseTD(input);
-            case "Naive" -> parseNaive(input);
-            default -> parseNaive(input);
-        };
+        switch (parser) {
+            case "BU" : return parseBU(input);
+            case "TD" : return parseTD(input);
+            case "naive" : return  parseNaive(input);
+            default : throw new CharacterNotFoundException(parser + " is not a valid parser");
+        }
     }
 }

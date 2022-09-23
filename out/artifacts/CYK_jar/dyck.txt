@@ -1,0 +1,6 @@
+S LA
+L (
+S SS
+S LR
+A SR
+R )
