@@ -10,7 +10,7 @@ public class Grammar {
     public int numberNonTerminalRules;
     public int numberTerminalRules;
     public int numberOfUniqueNonTerminals;
-    private final int [] characterMappingTable;
+    private final char [] characterMappingTable;
 
     public Grammar (File file) throws FileNotFoundException, CharacterNotFoundException {
         ArrayList<char[]> terminalRules = new ArrayList<>();
@@ -47,8 +47,8 @@ public class Grammar {
         this.numberOfUniqueNonTerminals = characters.size();
         this.nonTerminalRules = new int[numberNonTerminalRules][3];
 
-        characterMappingTable = new int[characters.size() + terminalCharacters.size()];
-        characterMappingTable[0] = start;
+        characterMappingTable = new char[characters.size() + terminalCharacters.size()];
+        characterMappingTable[0] = (char) start;
         characters.remove((char) start);
         int i = 1;
         for(char c : characters){
@@ -99,5 +99,9 @@ public class Grammar {
             result[i] = characterToInt(input.charAt(i));
         }
         return result;
+    }
+
+    public boolean isTerminal(int c) {
+        return Character.isUpperCase(characterMappingTable[c]);
     }
 }

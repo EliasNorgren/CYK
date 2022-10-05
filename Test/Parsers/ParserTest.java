@@ -116,14 +116,58 @@ class ParserTest {
     }
 
     @Test
-    void test2() throws Exception {
-        Grammar grammar = new Grammar(new File("Resource/stupidGrammar.txt"));
+    void linearGrammar() throws Exception {
+        Grammar grammar = new Grammar(new File("Resource/linearGrammar.txt"));
         Parser p = new Parser(grammar);
-        StringBuilder sb = new StringBuilder("aaaa");
-//        for(int i = 0; i < 10; i++){
-            p.parseTD(sb.toString());
-            System.out.println(sb.length() +  " " + p.counter);
-            sb.append("a");
-//        }
+
+        assert p.parseLinear("abbc");
+
+        assert !p.parseLinear("abcc");
+
+        StringBuilder sb = new StringBuilder("abc");
+
+        for(int i = 0; i < 15; i++){
+            System.out.println(sb + " true");
+            assert p.parseLinear(sb.toString());
+
+            sb.append('c');
+            System.out.println(sb + " false");
+            assert !p.parseLinear(sb.toString());
+
+            sb.insert(0, 'a');
+            System.out.println(sb + " true");
+            assert p.parseLinear(sb.toString());
+
+
+        }
+        System.out.println();
+        sb = new StringBuilder("abc");
+        for(int i = 0; i < 15; i++){
+            sb.insert(0, "ab");
+            sb.append('c');
+            System.out.println(sb + " true");
+            assert p.parseLinear(sb.toString());
+        }
+
+        System.out.println();
+        sb = new StringBuilder("aac");
+        for(int i = 0; i < 15; i++){
+            sb.append('c');
+            System.out.println(sb + " false");
+            assert !p.parseLinear(sb.toString());
+        }
+    }
+
+    @Test
+    void test2() throws Exception {
+        Grammar grammar = new Grammar(new File("Resource/linearGrammar.txt"));
+        Parser p = new Parser(grammar);
+        StringBuilder sb = new StringBuilder("abccc");
+        for(int i = 0; i < 1000; i++){
+            boolean ret = p.parseLinear(sb.toString());
+            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
+            sb.append("c");
+//            sb.insert(0, 'a');
+        }
     }
 }

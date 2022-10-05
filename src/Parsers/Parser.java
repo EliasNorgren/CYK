@@ -124,6 +124,39 @@ public class Parser {
         return false;
     }
 
+    public boolean parseLinear(String input) throws CharacterNotFoundException {
+        counter = 0;
+        startTimer();
+        boolean res =  linRec(0, grammar.convertStringToInts(input), 0 , input.length()-1);
+        stopTimer();
+        return res;
+    }
+
+    private boolean linRec(int rule, int[] input, int i, int j){
+        counter ++;
+        if(i == j){
+            return grammar.terminalRuleExists(rule, input[i]);
+        }
+
+        for(int r = 0; r < grammar.numberNonTerminalRules; r ++){
+            if(grammar.nonTerminalRules[r][0] != rule){
+                continue;
+            }
+            // Left-linear
+            if(grammar.isTerminal(grammar.nonTerminalRules[r][1]) && grammar.nonTerminalRules[r][2] == input[j]){
+                if(linRec(grammar.nonTerminalRules[r][1], input, i, j-1)){
+                    return true;
+                }
+            // Right-linear
+            }else if(grammar.isTerminal(grammar.nonTerminalRules[r][2]) && grammar.nonTerminalRules[r][1] == input[i]){
+                if(linRec(grammar.nonTerminalRules[r][2], input, i+1, j)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void startTimer(){
         time = System.currentTimeMillis();
     }
