@@ -1,10 +1,9 @@
+import Enumerator.StringEnumerator;
 import Grammar.*;
 import Parsers.Parser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 public class Main {
     public static void main(String[] args) throws CharacterNotFoundException, FileNotFoundException {
@@ -14,6 +13,7 @@ public class Main {
                 case "BU" : parser = "BU"; break;
                 case "TD" : parser = "TD"; break;
                 case "naive" : parser = "naive"; break;
+                case "linear" : parser = "linear"; break;
                 default :
                     System.out.println("Usage: \"java -jar CYK.jar [tests | file] [BU | TD | naive] \"testString\"\"");
                     return;

@@ -2,12 +2,8 @@ package Parsers;
 
 import Grammar.Grammar;
 import org.junit.jupiter.api.Test;
-
+import Enumerator.StringEnumerator;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ParserTest {
 
@@ -118,35 +114,45 @@ class ParserTest {
     @Test
     void linearGrammar() throws Exception {
         Grammar grammar = new Grammar(new File("Resource/linearGrammar.txt"));
+        Grammar grammar2 = new Grammar(new File("Resource/linearCNFGrammar.txt"));
+
         Parser p = new Parser(grammar);
+        Parser p2 = new Parser(grammar2);
 
         assert p.parseLinear("abbc");
+        assert p2.parseTD("abbc");
 
         assert !p.parseLinear("abcc");
+        assert !p2.parseTD("abcc");
 
         StringBuilder sb = new StringBuilder("abc");
 
         for(int i = 0; i < 15; i++){
             System.out.println(sb + " true");
             assert p.parseLinear(sb.toString());
+            assert p2.parseTD(sb.toString());
 
             sb.append('c');
             System.out.println(sb + " false");
             assert !p.parseLinear(sb.toString());
+            assert !p2.parseTD(sb.toString());
 
             sb.insert(0, 'a');
             System.out.println(sb + " true");
             assert p.parseLinear(sb.toString());
+            assert p2.parseTD(sb.toString());
 
 
         }
         System.out.println();
         sb = new StringBuilder("abc");
-        for(int i = 0; i < 15; i++){
+        for(int i = 0; i < 20; i++){
             sb.insert(0, "ab");
             sb.append('c');
             System.out.println(sb + " true");
             assert p.parseLinear(sb.toString());
+            assert p2.parseTD(sb.toString());
+            System.out.print(" count "  + p.counter);
         }
 
         System.out.println();
@@ -155,19 +161,43 @@ class ParserTest {
             sb.append('c');
             System.out.println(sb + " false");
             assert !p.parseLinear(sb.toString());
+            assert !p2.parseTD(sb.toString());
         }
     }
 
     @Test
     void test2() throws Exception {
         Grammar grammar = new Grammar(new File("Resource/linearGrammar.txt"));
+        Grammar grammar2 = new Grammar(new File("Resource/linearCNFGrammar.txt"));
+
         Parser p = new Parser(grammar);
+        Parser p2 = new Parser(grammar2);
         StringBuilder sb = new StringBuilder("abccc");
-        for(int i = 0; i < 1000; i++){
-            boolean ret = p.parseLinear(sb.toString());
-            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
-            sb.append("c");
-//            sb.insert(0, 'a');
-        }
+//        for(int i = 0; i < 1000; i++){
+//            boolean ret = p.parseLinear(sb.toString());
+//            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
+//            sb.append("c");
+////            sb.insert(0, 'a');
+//        }
+
+        String s = "ababccccccc";
+
+        System.out.println(p.parseLinear(s) + " " + p.counter);
+
+//        sb = new StringBuilder("abc");
+//        for(int i = 0; i < 1000; i++){
+//            sb.insert(0, "ab");
+//            sb.append('c');
+//            boolean ret = p.parseLinear(sb.toString());
+//            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
+//        }
+
+//        StringEnumerator se = new StringEnumerator("abc", "a", StringEnumerator.Index.BEGINNING, 100);
+//        for(int i = 0; i < 1000; i++){
+//            String s = se.getNext();
+//            boolean ret = p.parseTD(s);
+////            System.out.println("len: " + sb.length() +  " count: " + p2.counter + " time: " + p2.time + " value: " + ret);
+//            System.out.println(s.length() + " " + p.counter);
+//        }
     }
 }

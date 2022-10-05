@@ -170,6 +170,7 @@ public class Parser {
             case "BU" : return parseBU(input);
             case "TD" : return parseTD(input);
             case "naive" : return  parseNaive(input);
+            case "linear" : return parseLinear(input);
             default : throw new CharacterNotFoundException(parser + " is not a valid parser");
         }
     }

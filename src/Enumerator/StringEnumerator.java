@@ -1,4 +1,4 @@
-
+package Enumerator;
 
 public class StringEnumerator {
     private final StringBuilder sb;
