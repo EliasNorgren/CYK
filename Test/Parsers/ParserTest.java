@@ -1,6 +1,7 @@
 package Parsers;
 
 import Grammar.Grammar;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,7 +54,7 @@ class ParserTest {
         StringBuilder sb = new StringBuilder("()");
         StringBuilder sb2 = new StringBuilder("()");
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
 
             sb2.insert(sb.length(), ")", 0, 1);
             boolean x = p.parseTD(sb2.toString());
@@ -68,7 +69,7 @@ class ParserTest {
 
             sb2.insert(0, "(", 0, 1);
             assert p.parseTD(sb2.toString());
-            System.out.println("Doing \"" + sb2 + "\" - " + p.counter);
+            System.out.println("Doing \"" + sb2 + "\" - " + p.counter + " even ones");
 
         }
 
@@ -112,5 +113,17 @@ class ParserTest {
 
         assert p.parseBU("baaba");
         assert !p.parseBU("baabaa");
+    }
+
+    @Test
+    void test2() throws Exception {
+        Grammar grammar = new Grammar(new File("Resource/stupidGrammar.txt"));
+        Parser p = new Parser(grammar);
+        StringBuilder sb = new StringBuilder("aaaa");
+//        for(int i = 0; i < 10; i++){
+            p.parseTD(sb.toString());
+            System.out.println(sb.length() +  " " + p.counter);
+            sb.append("a");
+//        }
     }
 }

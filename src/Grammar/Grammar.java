@@ -13,8 +13,8 @@ public class Grammar {
     private final int [] characterMappingTable;
 
     public Grammar (File file) throws FileNotFoundException, CharacterNotFoundException {
-        HashMap<Character, Character> terminalRules = new HashMap<>();
-        HashMap<Character, ArrayList<char[]>> nonTerminalRules = new HashMap<>();
+        ArrayList<char[]> terminalRules = new ArrayList<>();
+        ArrayList<char[]> nonTerminalRules = new ArrayList<>();
 
         Scanner sc = new Scanner(new FileReader(file));
         Set<Character> characters = new HashSet<>();
@@ -33,12 +33,11 @@ public class Grammar {
             }
 
             if(splitted[1].length() == 1){
-                terminalRules.put(splitted[0].charAt(0), splitted[1].charAt(0));
+                terminalRules.add(new char[]{splitted[0].charAt(0), splitted[1].charAt(0)});
                 terminalCharacters.add(splitted[1].charAt(0));
                 numberTerminalRules++;
             }else{
-                nonTerminalRules.computeIfAbsent(splitted[0].charAt(0), k -> new ArrayList<>());
-                nonTerminalRules.get(splitted[0].charAt(0)).add(splitted[1].toCharArray());
+                nonTerminalRules.add(new char[]{splitted[0].charAt(0), splitted[1].charAt(0), splitted[1].charAt(1)});
                 numberNonTerminalRules++;
                 characters.add(splitted[1].charAt(0));
                 characters.add(splitted[1].charAt(1));
@@ -61,19 +60,17 @@ public class Grammar {
             i++;
         }
         i = 0;
-        for (Map.Entry<Character, ArrayList<char[]>> entry : nonTerminalRules.entrySet()) {
-            for(char[] c : entry.getValue()){
-                this.nonTerminalRules[i][0] = this.characterToInt(entry.getKey());
-                this.nonTerminalRules[i][1] = this.characterToInt(c[0]);
-                this.nonTerminalRules[i][2] = this.characterToInt(c[1]);
-                i++;
-            }
+        for(char[] arr : nonTerminalRules){
+            this.nonTerminalRules[i][0] = this.characterToInt(arr[0]);
+            this.nonTerminalRules[i][1] = this.characterToInt(arr[1]);
+            this.nonTerminalRules[i][2] = this.characterToInt(arr[2]);
+            i++;
         }
         terminalRulesMapped = new int[numberTerminalRules][2];
         i = 0;
-        for(Map.Entry<Character, Character> entry : terminalRules.entrySet()){
-            terminalRulesMapped[i][0] = this.characterToInt(entry.getKey());
-            terminalRulesMapped[i][1] = this.characterToInt(entry.getValue());
+        for(char[] arr : terminalRules){
+            terminalRulesMapped[i][0] = this.characterToInt(arr[0]);
+            terminalRulesMapped[i][1] = this.characterToInt(arr[1]);
             i++;
         }
     }
