@@ -35,4 +35,5 @@ public class StringEnumerator {
     public int getLength(){
         return sb.length();
     }
+
 }

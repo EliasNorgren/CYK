@@ -167,37 +167,44 @@ class ParserTest {
 
     @Test
     void test2() throws Exception {
-        Grammar grammar = new Grammar(new File("Resource/linearGrammar.txt"));
-        Grammar grammar2 = new Grammar(new File("Resource/linearCNFGrammar.txt"));
+//        Grammar grammar = new Grammar(new File("Resource/ababLinearGrammar.txt"));
+        Grammar grammar2 = new Grammar(new File("Resource/aaaLinearCNF.txt"));
 
-        Parser p = new Parser(grammar);
-        Parser p2 = new Parser(grammar2);
-        StringBuilder sb = new StringBuilder("abccc");
+        Parser p = new Parser(grammar2);
+
+//        System.out.println(p.parseLinear("aab"));
+
+//        Parser p2 = new Parser(grammar2);
+//        StringBuilder sb = new StringBuilder("abccc");
 //        for(int i = 0; i < 1000; i++){
 //            boolean ret = p.parseLinear(sb.toString());
 //            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
 //            sb.append("c");
 ////            sb.insert(0, 'a');
 //        }
-
-        String s = "ababccccccc";
-
-        System.out.println(p.parseLinear(s) + " " + p.counter);
-
+//
+//        String s = "ababccccccc";
+//
+//        System.out.println(p.parseLinear(s) + " " + p.counter);
+//
 //        sb = new StringBuilder("abc");
-//        for(int i = 0; i < 1000; i++){
+//        for(int i = 0; i < 2000; i++){
 //            sb.insert(0, "ab");
 //            sb.append('c');
 //            boolean ret = p.parseLinear(sb.toString());
 //            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
 //        }
+//
+//        StringEnumerator se = new StringEnumerator("abc", "b", StringEnumerator.Index.MIDDLE, 100);
+        StringBuilder sb = new StringBuilder("d");
 
-//        StringEnumerator se = new StringEnumerator("abc", "a", StringEnumerator.Index.BEGINNING, 100);
-//        for(int i = 0; i < 1000; i++){
+        for(int i = 0; i < 3000; i++){
 //            String s = se.getNext();
-//            boolean ret = p.parseTD(s);
-////            System.out.println("len: " + sb.length() +  " count: " + p2.counter + " time: " + p2.time + " value: " + ret);
-//            System.out.println(s.length() + " " + p.counter);
-//        }
+            sb.insert(0, "a");
+            sb.append('c');
+            boolean ret = p.parseLinear(sb.toString());
+//            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
+            System.out.println(sb.length() + " " + p.counter);
+        }
     }
 }
