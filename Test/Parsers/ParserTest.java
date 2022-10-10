@@ -167,38 +167,12 @@ class ParserTest {
 
     @Test
     void test2() throws Exception {
-        Grammar grammar = new Grammar(new File("Resource/linearGrammar.txt"));
+        Grammar grammar = new Grammar(new File("Resource/aaaLinearGrammar.txt"));
 //        Grammar grammar = new Grammar(new File("Resource/linearCNFGrammar.txt"));
 
         Parser p = new Parser(grammar);
-//        Parser p2 = new Parser(grammar2);
-//        StringBuilder sb = new StringBuilder("abccc");
-//        for(int i = 0; i < 1000; i++){
-//            boolean ret = p.parseLinear(sb.toString());
-//            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
-//            sb.append("c");
-////            sb.insert(0, 'a');
-//        }
 
-//        String s = "ababccccccc";
-
-//        System.out.println(p.parseLinear(s) + " " + p.counter);
-
-//        sb = new StringBuilder("abc");
-//        for(int i = 0; i < 100; i++){
-//
-//            boolean ret = p.parseTD(sb.toString());
-////            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
-//            System.out.println(sb.length() + " " + p.counter);
-//
-//            for(int j= 0;j < 33; j++){
-//                sb.insert(0, "ab");
-//                sb.append('c');
-//            }
-//        }
-
-//        StringEnumerator se = new StringEnumerator("abc", "ab", StringEnumerator.Index.BEGINNING, 100);
-        StringBuilder sb = new StringBuilder("abc");
+        StringBuilder sb = new StringBuilder("aba");
         for(int i = 0; i < 51; i++){
 //            String s = se.getNext();
 
@@ -206,8 +180,8 @@ class ParserTest {
 //            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
             System.out.println(sb.length() + " " + p.counter);
 
-            for(int j = 0; j < 50; j ++) {
-                sb.append('c');
+            for(int j = 0; j < 3; j ++) {
+                sb.append('a');
                 sb.insert(0, "a");
             }
         }

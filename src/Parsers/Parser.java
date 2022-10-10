@@ -126,16 +126,27 @@ public class Parser {
 
     public boolean parseLinear(String input) throws CharacterNotFoundException {
         counter = 0;
+        Boolean [][][] table = new Boolean[input.length()][input.length()][grammar.numberOfUniqueNonTerminals];
+        for(int i = 0; i < input.length(); i++){
+            for(int j = 0; j < input.length(); j++){
+                for(int k = 0; k < grammar.numberOfUniqueNonTerminals; k++){
+                    table[i][j][k] = null;
+                }
+            }
+        }
         startTimer();
-        boolean res =  linRec(0, grammar.convertStringToInts(input), 0 , input.length()-1);
+        boolean res =  linRec(0, grammar.convertStringToInts(input), 0 , input.length()-1, table);
         stopTimer();
         return res;
     }
 
-    private boolean linRec(int rule, int[] input, int i, int j){
+    private boolean linRec(int rule, int[] input, int i, int j, Boolean[][][] table){
         counter ++;
         if(i == j){
             return grammar.terminalRuleExists(rule, input[i]);
+        }
+        if(table[i][j][rule] != null){
+            return table[i][j][rule];
         }
 
         for(int r = 0; r < grammar.numberNonTerminalRules; r ++){
@@ -144,16 +155,19 @@ public class Parser {
             }
             // Left-linear
             if(grammar.isTerminal(grammar.nonTerminalRules[r][1]) && grammar.nonTerminalRules[r][2] == input[j]){
-                if(linRec(grammar.nonTerminalRules[r][1], input, i, j-1)){
+                if(linRec(grammar.nonTerminalRules[r][1], input, i, j-1, table)){
+                    table[i][j][rule] = true;
                     return true;
                 }
             // Right-linear
             }else if(grammar.isTerminal(grammar.nonTerminalRules[r][2]) && grammar.nonTerminalRules[r][1] == input[i]){
-                if(linRec(grammar.nonTerminalRules[r][2], input, i+1, j)){
+                if(linRec(grammar.nonTerminalRules[r][2], input, i+1, j, table)){
+                    table[i][j][rule] = true;
                     return true;
                 }
             }
         }
+        table[i][j][rule] = false;
         return false;
     }
 
