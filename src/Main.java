@@ -15,7 +15,7 @@ public class Main {
                 case "naive" : parser = "naive"; break;
                 case "linear" : parser = "linear"; break;
                 default :
-                    System.out.println("Usage: \"java -jar CYK.jar [tests | file] [BU | TD | naive] \"testString\"\"");
+                    System.out.println("Usage: \"java -jar CYK.jar [tests | file] [BU | TD | naive | linear] \"testString\"\"");
                     return;
             }
             Grammar grammar = new Grammar(new File(args[0]));
@@ -69,9 +69,31 @@ public class Main {
             se = new StringEnumerator("", "a", StringEnumerator.Index.END, 100);
             System.out.println("Doing a..a bottom-up");
             runTests(p, se, "BU");
+
+            System.out.println("Doing a..aba..a top-down linear CNF");
+            grammar = new Grammar(new File("aaaLinearCNF.txt"));
+            p = new Parser(grammar);
+            StringBuilder sb = new StringBuilder("aba");
+            for(int i = 0; i < 10; i++){
+
+                boolean val = p.parseTD(sb.toString());
+                System.out.println("Length: " + sb.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
+                sb.insert(0, 'a');
+                sb.append('a');
+            }
+
+            System.out.println("Doing a..aba..a linear implementation");
+            grammar = new Grammar(new File("aaaLinearGrammar.txt"));
+            p = new Parser(grammar);
+            sb = new StringBuilder("aba");
+            for(int i = 0; i < 10; i++){
+
+                boolean val = p.parseLinear(sb.toString());
+                System.out.println("Length: " + sb.length() + " Counter: " + p.counter + "  Time: " + p.time + " Truth value: " + val);
+                sb.insert(0, 'a');
+                sb.append('a');
+            }
         }
-
-
     }
 
     private static void runTests(Parser p, StringEnumerator se, String bu) throws CharacterNotFoundException {

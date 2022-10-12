@@ -146,7 +146,7 @@ public class Parser {
             return grammar.terminalRuleExists(rule, input[i]);
         }
         if(table[i][j][rule] != null){
-            System.out.println("TAB");
+//            System.out.println("TAB");
             return table[i][j][rule];
         }
 

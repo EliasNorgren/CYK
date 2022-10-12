@@ -1,8 +1,0 @@
-S AX
-X c
-S b
-A YS
-Y a
-A YB
-B ZS
-Z b

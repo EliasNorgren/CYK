@@ -173,17 +173,17 @@ class ParserTest {
         Parser p = new Parser(grammar);
 
         StringBuilder sb = new StringBuilder("aba");
-        for(int i = 0; i < 1; i++){
+        for(int i = 0; i < 10; i++){
 //            String s = se.getNext();
+
+            boolean ret = p.parseLinear(sb.toString());
+//            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
+            System.out.println(sb.length() + " " + p.counter);
+
             for(int j = 0; j < 1; j ++) {
                 sb.append('a');
                 sb.insert(0, "a");
             }
-
-            boolean ret = p.parseLinear(sb.toString());
-//            System.out.println("len: " + sb.length() +  " count: " + p.counter + " time: " + p.time + " value: " + ret);
-            System.out.println(sb + " " + p.counter);
-
         }
     }
 }
